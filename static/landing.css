@@ -1,0 +1,206 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins', sans-serif;
+    color:#f5f5dc;
+
+    background:
+        radial-gradient(circle at 80% 30%, rgba(131,153,88,0.2), transparent 45%),
+        radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.7) 100%),
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+        url("../static/images/leaf_bg2.png");
+
+    background-repeat:repeat;
+    background-size:auto;
+}
+
+/* NAVBAR */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 60px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo img{
+    width:72px;
+    filter:drop-shadow(0 0 10px rgba(212,175,55,0.4));
+}
+
+.logo span{
+    font-size:22px;
+    font-weight:700;
+    background:linear-gradient(145deg,#e6c97a,#c9a24d);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* BUTTONS */
+
+.btn-solid{
+    background:linear-gradient(145deg,#e6c97a,#c9a24d);
+    color:#1a1a1a;
+    padding:10px 22px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+    box-shadow:0 0 20px rgba(212,175,55,0.4);
+    transition:0.3s;
+}
+
+.btn-solid:hover{
+    box-shadow:0 0 35px rgba(212,175,55,0.7);
+}
+
+.btn-outline{
+    border:1px solid #d4af37;
+    padding:10px 22px;
+    border-radius:30px;
+    text-decoration:none;
+    color:#f4edf2;
+    transition:0.3s;
+}
+
+.btn-outline:hover{
+    
+    background:#d4af37;
+    color:#1a1a1a;
+}
+
+.large{
+    padding:14px 35px;
+    font-size:16px;
+}
+
+/* HERO */
+
+.hero{
+    text-align:center;
+    padding:10px 20px 80px;
+}
+
+.hero h1{
+    font-family: 'Cinzel',serif;
+    font-size:64px;
+    background:linear-gradient(145deg,#f4dfa3,#f3d594);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    text-shadow:
+        0 0 10px rgba(212,175,55,0.6),
+        0 0 25px rgba(212,175,55,0.4),
+        0 0 40px rgba(212,175,55,0.2);
+}
+
+.hero h2{
+    margin-top:2px;
+    font-weight:2000;
+}
+
+.hero p{
+    margin-top:15px;
+    opacity:0.9;
+}
+
+.hero-buttons{
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+
+/* FEATURES */
+
+.features{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    padding:1px 40px;
+}
+
+.feature-card{
+    width:300px;
+    padding:30px;
+    border-radius:20px;
+    border:1px solid rgba(212,175,55,0.3);
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(15px);
+    transition:0.3s;
+}
+
+.feature-card h3{
+    font-size:20px;
+    background:linear-gradient(145deg,#e6c97a,#c9a24d);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+} 
+
+
+.feature-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 40px rgba(212,175,55,0.3);
+}
+
+/* IMPACT */
+
+.impact{
+    text-align:center;
+    padding:70px 20px;
+}
+
+.impact-boxes{
+    margin-top:40px;
+    display:flex;
+    justify-content:center;
+    gap:40px;
+}
+
+.impact-card{
+    width:250px;
+    padding:30px;
+    border-radius:20px;
+    border:1px solid rgba(212,175,55,0.3);
+    background:rgba(0,0,0,0.4);
+}
+
+.impact-card h3{
+    font-size:20px;
+    background:linear-gradient(145deg,#e6c97a,#c9a24d);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+} 
+
+.impact-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 40px rgba(212,175,55,0.3);
+}
+
+/* CTA */
+
+.cta{
+    text-align:center;
+    padding:20px 20px;
+    margin-bottom: 40px;
+}
+
+.cta h3{
+    padding: 30px;
+}
+
+footer{
+    text-align:center;
+    padding:0.02px;
+    font-size:14px;
+    opacity:0.7;
+}

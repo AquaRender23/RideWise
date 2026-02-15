@@ -1,0 +1,313 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* ================= BASE ================= */
+
+html, body {
+    min-height:100%;
+    font-family:'Poppins',sans-serif;
+    color:#f5f5dc;
+}
+
+/* ================= PAGE BACKGROUND ================= */
+
+body {
+    background:
+        /* radial-gradient(circle at 82% 38%, rgba(131,153,88,0.18), transparent 45%),
+        radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.65) 100%), */
+
+        linear-gradient(rgba(0,15,10,0.35), rgba(0,15,10,0.45)),
+        url("../static/images/leaf1_bg.png");
+
+    background-repeat:repeat;
+    background-size:auto;
+    background-position:bottom;
+}
+
+/* ================= LAYOUT ================= */
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar{
+    width:260px;
+    padding:40px 25px;
+    display:flex;
+    flex-direction:column;
+    border-right:1px solid rgba(255,255,255,0.08);
+
+    background:
+        linear-gradient(rgba(0,40,30,0.85), rgba(0,40,30,0.9)),
+        url("../static/images/bg.png");
+
+    background-size:cover;
+    background-position:center;
+}
+
+
+/* Sidebar Links */
+.menu a {
+    text-decoration: none;
+    color: #e6e6e6;
+    font-size: 16px;          /* smaller text */
+    font-weight: 500;
+    display: inline-block;    /* shrink to content */
+    padding: 0.5px 0.5px;        /* smaller box */
+    border-radius: 8px;       /* softer rounded */
+    transition: all 0.3s ease;
+}
+
+/* Hover */
+.menu a:hover {
+    background: rgba(255, 215, 0, 0.12);
+    color: black;
+}
+
+/* ================= LOGO ================= */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:40px;
+}
+
+/* Logo Image */
+.logo img{
+    width:42px;
+    height:auto;
+    filter: drop-shadow(0 0 10px rgba(212,175,55,0.4));
+}
+
+/* Gold Text */
+.logo span{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:1px;
+
+    background:linear-gradient(145deg,#e6c97a,#c9a24d);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    text-shadow:0 0 15px rgba(212,175,55,0.35);
+}
+
+
+/* ================= MENU ================= */
+
+.menu{
+    list-style:none;
+}
+
+.menu li{
+    padding:12px 14px;
+    border-radius:14px;
+    margin-bottom:12px;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+/* GOLD HOVER + ACTIVE */
+.menu li:hover,
+.menu .active{
+    background:linear-gradient(145deg,#e6c97a,#c9a24d);
+    color:#1a1a1a;
+    font-weight:600;
+    box-shadow:0 0 20px rgba(212,175,55,0.5);
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    flex:1;
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* ================= TOP SECTION ================= */
+
+.top-section{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    right : 200px;
+}
+
+
+.welcome h1{
+    font-size:36px;
+    margin-bottom:10px;
+    margin-left: 60px;
+}
+
+.welcome p{
+    margin-bottom:15px;
+    opacity:0.9;
+    margin-left: 60px;
+}
+
+/* ================= BUTTON ================= */
+
+.eco-btn{
+    background:linear-gradient(145deg,#c9a96a,#b38b4d);
+    border:none;
+    padding:10px 26px;
+    border-radius:30px;
+    font-weight:600;
+    font-size: 20px;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(212,175,55,0.4);
+    margin-right:100px;
+
+}
+
+/* ================= GLASS BOX SYSTEM ================= */
+
+.glass{
+    background:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.55)),
+        /* url("../static/images/leaf_bg2.png"); */
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:repeat;
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border-radius:20px;
+
+    border:1px solid rgba(212,175,55,0.35);
+
+    /* box-shadow:
+        0 0 45px rgba(0,255,150,0.12),
+        0 0 25px rgba(212,175,55,0.15); */
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
+    transition:0.35s ease;
+}
+
+.glass:hover{
+    transform:translateY(-5px);
+
+    border:1px solid rgba(212,175,55,0.6);
+
+    box-shadow:
+        0 0 55px rgba(212,175,55,0.3),
+        0 0 60px rgba(0,255,150,0.18);
+}
+/* ================= FOOTPRINT ================= */
+
+.footprint-section{
+    padding:25px;
+}
+
+.section-title{
+    margin-bottom:20px;
+}
+
+.footprint-container{
+    display:flex;
+    gap:25px;
+    align-items:flex-end;
+}
+
+.footprint-cards{
+    flex:1.2;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;   /* Smaller gap */
+}
+
+
+/* Slim Rectangular Cards */
+.card{
+    padding:8px 14px;      /* Very tight padding */
+    height:80px;           /* Much thinner */
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    border-radius:12px;    /* Slightly sharper */
+}
+
+.card span{
+    display:block;
+    margin-top:3px;
+    font-size:15px;
+    font-weight:600;
+}
+
+.card h3{
+    font-size:14px;
+    font-weight:500;
+}
+
+.graph-box{
+    flex:1;
+    padding:20px;
+    
+}
+
+.graph-placeholder{
+    height:150px;
+    margin-top:15px;
+    background:rgba(0,0,0,0.25);
+    border-radius:12px;
+}
+
+.glass_above_heading{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom: -48px;
+    color: #c9a96a;
+}
+
+/* ================= LOWER SECTION ================= */
+
+.dashboard-lower{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.chart-box,
+.emission-box,
+.upcoming-box{
+    padding:20px;
+}
+
+
+.upcoming-box ul{
+    list-style:none;
+    margin-top:15px;
+}
+
+.upcoming-box li{
+    margin-bottom:10px;
+}
+
+/* ===== Chart Canvas Fix ===== */
+
+.graph-box canvas,
+.chart-box canvas,
+.emission-box canvas {
+    width: 100% !important;
+    height: 180px !important;
+}
+
+/* Make emission box taller */
+.emission-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

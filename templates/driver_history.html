@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Rides - RideWise</title>
+    <link rel="stylesheet" href="../static/driver_history.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <img src="../static/images/logo.png" class="logo">
+                <h2>RideWise</h2>
+            </div>
+
+            <nav>
+                <a href="{{ url_for('driver_dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('add_ride') }}">Add Ride</a>
+                <a href="{{ url_for('driver_history') }}" class="active">My Rides</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <h1 class="page-title">My Rides 🌿</h1>
+            <p class="subtitle">View and manage your ride history.</p>
+
+            <div class="rides-container">
+                {% if bookings and bookings|length > 0 %}
+
+                {% for ride in bookings %}
+                <div class="ride-card">
+                    <div class="ride-row">
+                        <div class="ride-info">
+                            <span class="location">
+                                {{ ride.start_location }} → {{ ride.end_location }}
+                            </span>
+                            <span class="date-time">
+                                {{ ride.date }}  {{ ride.time }}
+                            </span>
+                            <div class="rider-info">
+                                👤 Rider: <b>{{ ride.rider_name }}</b><br>
+                                📞 Phone: <b>{{ ride.rider_phone }}</b><br>
+                                👥 People: <b>{{ ride.people }}</b>
+                            </div>
+                        </div>
+
+                        <div class="ride-actions">
+                            <span class="status {{ ride.status }}">
+                                {{ ride.status|capitalize }}
+                            </span>
+                            <button class="eco-btn" onclick="toggleEco(this)">🌿</button>
+                        </div>
+                    </div>
+
+                    <div class="eco-dropdown">
+                        <div>📏 Distance: <b>{{ ride.distance_km }} km</b></div>
+                        <div>💰 Fare: <b>₹{{ ride.fare }}</b></div>
+                        <div>🌍 CO₂ Saved: <b>{{ ride.co2_saved }} kg</b></div>
+                        <div>⛽ Fuel Saved: <b>{{ ride.fuel_saved }} L</b></div>
+                        <div>⭐ Eco Points: <b>{{ ride.eco_points }}</b></div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% else %}
+
+                <div class="no-rides">
+                    <h2>No rides booked yet</h2>
+                    <!-- <p>Book your first eco ride 🌿</p> -->
+                </div>
+
+                {% endif %}
+
+            </div>
+    </div>
+    </div>
+    </main>
+    </div>
+
+    <script>
+        function toggleEco(button) {
+            const card = button.closest(".ride-card");
+            const dropdown = card.querySelector(".eco-dropdown");
+            dropdown.classList.toggle("show");
+        }
+    </script>
+
+</body>
+
+</html>

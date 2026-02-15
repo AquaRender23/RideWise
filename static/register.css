@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+/* OUTER BACKGROUND */
+body.login-body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 0;
+    font-family: 'Inter', sans-serif;
+
+    background:
+        linear-gradient(rgba(0,15,10,0.25), rgba(0,15,10,0.35)),
+        url("images/leaf1_bg.png");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* REGISTER CARD */
+.login-card {
+    width: 420px;
+    padding: 40px 35px;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(rgba(0,40,30,0.45), rgba(0,40,30,0.55)),
+        url("images/bg.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+
+    box-shadow:
+        0 0 60px rgba(0,255,150,0.08),
+        0 0 20px rgba(212,175,55,0.2);
+
+    text-align: center;
+}
+
+/* LOGO SECTION */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.logo-img {
+    width: 45px;
+}
+
+.logo {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: #d4af37;
+}
+
+/* TEXT */
+.welcome-text {
+    color: white;
+    margin-bottom: 6px;
+}
+
+.tagline {
+    color: #b8e6d8;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* LABELS */
+.field-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 6px;
+    margin-top: 12px;
+    color: #dcdcdc;
+    font-size: 13px;
+}
+
+/* INPUT */
+.input-wrapper {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.input-wrapper i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #d4af37;
+    font-size: 13px;
+}
+
+.input-wrapper i:first-child {
+    left: 12px;
+}
+
+.toggle-password {
+    right: 12px;
+    cursor: pointer;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 35px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,50,35,0.6);
+    color: white;
+    outline: none;
+    font-size: 13px;
+}
+
+.input-wrapper input:focus {
+    border-color: #ffd700;
+}
+
+/* GOLD BUTTON */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+    background: linear-gradient(145deg, #f0d38a, #c9a54c);
+    color: #1a1a1a;
+
+    box-shadow: 0 8px 25px rgba(212,175,55,0.4);
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(212,175,55,0.6);
+}
+
+/* TERMS */
+.terms {
+    margin-top: 15px;
+    font-size: 17px;
+    color: #9a9a9a;
+}
+
+.terms span {
+    color: #d4af37;
+}
+
+.small-link a {
+    color: #d4af37;
+    text-decoration: none;
+}

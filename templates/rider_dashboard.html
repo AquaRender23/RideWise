@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Commute Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='rider_dashboard.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
+            <span>RideWise</span>
+        </div>
+
+        <ul class="menu">
+            <li class="active">
+                <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('book_ride') }}">Book Ride</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('rider_history') }}">My Rides</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP SECTION -->
+        <section class="top-section">
+
+            <div class="welcome">
+                <h1>Welcome Back, {{ name }}</h1>
+
+                <p>
+                    Drive Smart. Travel Green.<br>
+                </p>
+            </div>
+
+            <!-- Book Ride Button Also Linked -->
+            <a href="{{ url_for('book_ride') }}">
+                <button class="eco-btn">Book Eco Ride</button>
+            </a>
+
+        </section>
+
+        <!-- FOOTPRINT SECTION -->
+        <!-- <section class="footprint-section glass"> -->
+
+            <div class="glass_above_heading"> Your Eco Snapshot </div>
+
+            <div class="footprint-container">
+
+                <div class="footprint-cards">
+
+                    <div class="card glass">
+                        <h3>🌍 Total CO₂ Saved</h3>
+                        <span>128 kg</span>
+                    </div>
+
+                    <div class="card glass">
+                        <h3>⛽ Fuel Saved</h3>
+                        <span>52 Liters</span>
+                    </div>
+
+                    <div class="card glass">
+                        <h3>🌳 Equivalent Trees</h3>
+                        <span>6</span>
+                    </div>
+
+                    <div class="card glass">
+                        <h3>⭐ Eco Score</h3>
+                        <span>820</span>
+                    </div>
+
+                </div>
+
+                <div class="graph-box glass">
+                    <h3>Monthly CO₂ Reduction</h3>
+                    <canvas id="co2Chart"></canvas>
+                </div>
+
+            </div>
+
+        <!-- </section> -->
+
+        <!-- LOWER DASHBOARD -->
+        <section class="dashboard-lower">
+
+            <div class="chart-box glass">
+                <h3>Ride Distribution</h3>
+                <canvas id="ridePieChart"></canvas>
+
+            </div>
+
+            <div class="emission-box glass">
+                <h3>Emission Comparison</h3>
+                <p>Shared Ride vs Normal Ride</p>
+                <canvas id="emissionBarChart"></canvas>
+
+            </div>
+
+            <div class="upcoming-box glass">
+                <h3>Upcoming Rides</h3>
+                <ul>
+                    <li>📍 JP Nagar → MG Road</li>
+                    <li>📍 Indiranagar → Electronic City</li>
+                    <li>📍 Whitefield → HSR Layout</li>
+                </ul>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+/* ================= LINE CHART ================= */
+
+fetch("/co2-data")
+    .then(response => response.json())
+    .then(data => {
+
+        const ctx = document.getElementById('co2Chart').getContext('2d');
+
+        Chart.register({
+            id: 'neonGlow',
+            beforeDatasetsDraw(chart) {
+                const {ctx} = chart;
+                ctx.save();
+                ctx.shadowColor = "rgba(212,175,55,0.9)";
+                ctx.shadowBlur = 25;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            },
+            afterDatasetsDraw(chart) {
+                chart.ctx.restore();
+            }
+        });
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.months,
+                datasets: [{
+                    label: "CO₂ Saved (kg)",
+                    data: data.values,
+                    borderColor: "#d4af37",
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+
+                    backgroundColor: (context) => {
+                        const chart = context.chart;
+                        const {ctx, chartArea} = chart;
+                        if (!chartArea) return null;
+
+                        const gradient = ctx.createLinearGradient(
+                            0,
+                            chartArea.top,
+                            0,
+                            chartArea.bottom
+                        );
+                        gradient.addColorStop(0, "rgba(212,175,55,0.6)");
+                        gradient.addColorStop(1, "rgba(212,175,55,0.05)");
+                        return gradient;
+                    },
+
+                    pointBackgroundColor: "#d4af37",
+                    pointBorderColor: "#ffffff",
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 10
+                }]
+            },
+            options: {
+                plugins:{
+                    legend:{
+                        labels:{
+                            color:"#f5f5dc"
+                        }
+                    }
+                },
+                scales:{
+                    x:{
+                        ticks:{ color:"#f5f5dc" }
+                    },
+                    y:{
+                        ticks:{ color:"#f5f5dc" }
+                    }
+                }
+            }
+        });
+
+    });
+
+/* ================= PIE / DOUGHNUT CHART ================= */
+
+fetch("/ride-distribution")
+    .then(response => response.json())
+    .then(data => {
+
+        const pieCtx = document.getElementById("ridePieChart").getContext("2d");
+
+        new Chart(pieCtx, {
+            type: "doughnut",
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.values,
+                    backgroundColor: [
+                        "#d4af37",   // Gold
+                        "#3cb371",   // Green
+                        "#ff6b6b"    // Red
+                    ],
+                    borderColor: "#111",
+                    borderWidth: 2,
+                    hoverOffset: 15
+                }]
+            },
+            options: {
+                cutout: "65%",
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#f5f5dc"
+                        }
+                    }
+                }
+            }
+        });
+
+    });
+
+    /* ================= BAR CHART ================= */
+
+fetch("/emission-data")
+    .then(response => response.json())
+    .then(data => {
+
+        const barCtx = document.getElementById("emissionBarChart").getContext("2d");
+
+        new Chart(barCtx, {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [{
+    label: "CO₂ Emission (kg)",
+    data: data.values,
+    backgroundColor: ["#ff6b6b", "#3cb371"],
+    borderColor: "#111",
+    borderWidth: 2,
+    borderRadius: 5,
+
+    barThickness: 30,
+    maxBarThickness: 35
+}]
+
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#f5f5dc"
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: "#f5f5dc" }
+                    },
+                    y: {
+                        ticks: { color: "#f5f5dc" }
+                    }
+                }
+            }
+        });
+
+    });
+
+
+</script>
+
+</body>
+</html>

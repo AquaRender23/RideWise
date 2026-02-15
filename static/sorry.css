@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* MAIN CONTAINER */
+.container {
+    display: flex;
+    height: 100vh;
+    background: url("../static/images/bg.png") no-repeat center center/cover;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(to bottom, #0b3d2e, #145c3c);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 50px;
+}
+
+.logo-img {
+    width: 65px;
+    height: auto;
+}
+
+.logo-text {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    letter-spacing: 4px;
+    color: #d4af37;
+}
+
+/* NAVIGATION */
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.sidebar nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+/* GOLD HOVER */
+.sidebar nav a:hover{
+    background:linear-gradient(145deg,#f0d38a,#c9a54c);
+    color:#1a1a1a;
+    box-shadow:0 8px 20px rgba(212,175,55,0.4);
+}
+
+.sidebar nav a.active {
+    background-color: #d4af37;
+    color: black;
+    font-weight: 600;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    padding: 50px 80px;
+    background: url("../static/images/leaf1_bg.png") no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* PAGE TITLE */
+.page-title h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 48px;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.page-title p {
+    color: #cfded5;
+    font-size: 18px;
+    margin-bottom: 50px;
+}
+
+/* SORRY CARD */
+.sorry-card {
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #d4af37;
+    border-radius: 20px;
+    padding: 50px;
+    width: 70%;
+    max-width: 750px;
+    color: white;
+}
+
+.sorry-card h2 {
+    font-family: 'Cinzel', serif;
+    color: #d4af37;
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+.sorry-card p {
+    font-size: 18px;
+    margin-bottom: 18px;
+    color: #e6e6e6;
+}
+
+/* BUTTON */
+.return-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 14px 35px;
+    background-color: #d4af37;
+    color: black;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.return-btn:hover {
+    background-color: #b9972f;
+}

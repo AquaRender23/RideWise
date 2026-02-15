@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Commute Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='rider_dashboard.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
+            <span>RideWise</span>
+        </div>
+
+        <ul class="menu">
+            <li class="active">
+                <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('add_ride') }}">Add Ride</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('driver_history') }}">My Rides</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP SECTION -->
+        <section class="top-section">
+
+            <div class="welcome">
+                <h1>Welcome Back, {{name}}</h1>
+                <p>
+                    Drive Smart. Travel Green.<br>
+                </p>
+            </div>
+
+            <!-- Book Ride Button Also Linked -->
+            <a href="{{ url_for('book_ride') }}">
+                <button class="eco-btn">Add Eco Ride</button>
+            </a>
+
+        </section>
+
+        <!-- FOOTPRINT SECTION -->
+        <!-- <section class="footprint-section glass"> -->
+
+            <div class="glass_above_heading"> Your Eco Snapshot </div>
+
+            <div class="footprint-container">
+
+                <div class="footprint-cards">
+
+                    <div class="card glass">
+                        <h3>🌍 Total CO₂ Saved</h3>
+                        <span>128 kg</span>
+                    </div>
+
+                    <div class="card glass">
+                        <h3>⛽ Fuel Saved</h3>
+                        <span>52 Liters</span>
+                    </div>
+
+                    <div class="card glass">
+                        <h3>🌳 Equivalent Trees</h3>
+                        <span>6</span>
+                    </div>
+
+                    <div class="card glass">
+                        <h3>⭐ Eco Score</h3>
+                        <span>820</span>
+                    </div>
+
+                </div>
+
+                <div class="graph-box glass">
+                    <h3>Monthly CO₂ Reduction</h3>
+                    <canvas id="co2Chart"></canvas>
+
+                </div>
+
+            </div>
+
+        <!-- </section> -->
+
+        <!-- LOWER DASHBOARD -->
+        <section class="dashboard-lower">
+
+            <div class="chart-box glass">
+                <h3>Ride Distribution</h3>
+                <canvas id="pieChart"></canvas>
+
+            </div>
+
+            <div class="emission-box glass">
+                <h3>Emission Comparison</h3>
+                <p>Shared Ride vs Normal Ride</p>
+                <canvas id="barChart"></canvas>
+
+            </div>
+
+            <div class="upcoming-box glass">
+                <h3>Upcoming Rides</h3>
+                <ul>
+                    <li>📍 JP Nagar → MG Road</li>
+                    <li>📍 Indiranagar → Electronic City</li>
+                    <li>📍 Whitefield → HSR Layout</li>
+                </ul>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+
+// 🌿 LINE CHART
+fetch("/co2-data")
+.then(response => response.json())
+.then(data => {
+
+    const ctx = document.getElementById("co2Chart");
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: data.months,
+            datasets: [{
+                label: "CO₂ Saved (kg)",
+                data: data.values,
+                borderColor: "#c9a96a",
+                backgroundColor: "rgba(201,169,106,0.2)",
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { labels: { color: "#f5f5dc" } }
+            },
+            scales: {
+                x: { ticks: { color: "#f5f5dc" } },
+                y: { ticks: { color: "#f5f5dc" } }
+            }
+        }
+    });
+});
+
+
+// 🥧 PIE CHART
+fetch("/ride-distribution")
+.then(response => response.json())
+.then(data => {
+
+    const ctx = document.getElementById("pieChart");
+
+    new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: data.labels,
+            datasets: [{
+                data: data.values,
+                backgroundColor: ["#c9a96a","#4caf50","#ff5252"]
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { labels: { color: "#f5f5dc" } }
+            }
+        }
+    });
+});
+
+
+// 📊 BAR CHART
+fetch("/emission-data")
+.then(response => response.json())
+.then(data => {
+
+    const ctx = document.getElementById("barChart");
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: "CO₂ Emission (kg)",
+                data: data.values,
+                backgroundColor: ["#ff5252","#4caf50"]
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { labels: { color: "#f5f5dc" } }
+            },
+            scales: {
+                x: { ticks: { color: "#f5f5dc" } },
+                y: { ticks: { color: "#f5f5dc" } }
+            }
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>
+

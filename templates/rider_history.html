@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Rides - RideWise</title>
+    <link rel="stylesheet" href="../static/rider_history.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <img src="../static/images/logo.png" class="logo">
+                <h2>RideWise</h2>
+            </div>
+
+            <nav>
+                <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('book_ride') }}">Book Ride</a>
+                <a href="{{ url_for('rider_history') }}" class="active">My Rides</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <h1 class="page-title">My Rides 🌿</h1>
+            <p class="subtitle">View and manage your ride history.</p>
+
+            <div class="rides-container">
+
+                {% if rides and rides|length > 0 %}
+
+                {% for ride in rides %}
+
+                <div class="ride-card">
+                    <div class="ride-row">
+                        <div class="ride-info">
+                            <span class="location">
+                                {{ ride.start_location }} → {{ ride.end_location }}
+                            </span>
+                            <span class="date-time">
+                                {{ ride.get('date', '') }}  {{ ride.get('time', '') }}
+                            </span>
+                        </div>
+
+                        <div class="ride-actions">
+                            <span class="status {{ ride.status }}">
+                                {{ ride.status | capitalize }}
+                            </span>
+                            <button class="eco-btn" onclick="toggleEco(this)">🌿</button>
+                        </div>
+                    </div>
+
+                    <div class="eco-dropdown">
+                        <p><strong>Driver:</strong> {{ ride.driver_name }}</p>
+                        <p><strong>Phone:</strong> {{ ride.driver_phone }}</p>
+                        <p><strong>Vehicle:</strong> {{ ride.vehicle_number }}</p>
+
+                        <div>📏 Distance: <b>{{ ride.distance_km }} km</b></div>
+                        <div>💰 Fare: <b>₹{{ ride.fare }}</b></div>
+                        <div>🌍 Total CO₂ Saved: <b>{{ ride.co2_saved }} kg</b></div>
+                        <div>⛽ Fuel Saved: <b>{{ ride.fuel_saved }} Liters</b></div>
+                        <div>⭐ Eco Score: <b>{{ ride.eco_points }}</b></div>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+                {% else %}
+
+                <div class="ride-card">
+                    <div class="ride-row">
+                        <div class="ride-info">
+                            <span class="location">No rides booked yet</span>
+                            <span class="date-time">Book your first eco ride 🌿</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleEco(button) {
+            const card = button.closest(".ride-card");
+            const dropdown = card.querySelector(".eco-dropdown");
+            dropdown.classList.toggle("show");
+        }
+    </script>
+
+</body>
+
+</html>

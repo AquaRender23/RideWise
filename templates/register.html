@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RideWise | Register</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Correct Flask CSS Linking -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+
+<body class="login-body">
+
+<div class="login-card">
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img">
+        <h1 class="logo">RIDEWISE</h1>
+    </div>
+
+    <h2 class="welcome-text">Create Account</h2>
+    <p class="tagline">Join the eco-friendly movement.</p>
+
+    <!-- REGISTER FORM -->
+    <form method="POST" action="{{ url_for('register') }}">
+
+        <!-- FULL NAME -->
+        <label class="field-label">Full Name</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="name" placeholder="Full Name" required>
+        </div>
+
+        <!-- PHONE -->
+        <label class="field-label">Phone Number</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-phone"></i>
+            <input type="tel" name="phone" placeholder="Phone Number" required>
+        </div>
+
+        <!-- EMAIL -->
+        <label class="field-label">Email Address</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" name="email" placeholder="Email Address" required>
+        </div>
+
+        <!-- PASSWORD -->
+        <label class="field-label">Password</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <i class="fa-solid fa-eye toggle-password"
+               onclick="togglePassword('password', this)"></i>
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+        <label class="field-label">Confirm Password</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <i class="fa-solid fa-eye toggle-password"
+               onclick="togglePassword('confirmPassword', this)"></i>
+        </div>
+
+        <button type="submit" class="login-btn">Register</button>
+
+        <p class="terms small-link">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Login</a>
+        </p>
+
+    </form>
+</div>
+
+<script>
+function togglePassword(id, icon) {
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+</script>
+
+</body>
+</html>

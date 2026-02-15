@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RideWise Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
+    <span>RideWise Admin</span>
+</div>
+
+        <div class="header-right">
+            <div>Admin - {{ name }}</div>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="card">
+            <h3>Total Rides Today</h3>
+            <h2>124</h2>
+        </div>
+        <div class="card">
+            <h3>Active Drivers</h3>
+            <h2>38</h2>
+        </div>
+        <div class="card">
+            <h3>Active Users</h3>
+            <h2>210</h2>
+        </div>
+        <div class="card">
+            <h3>CO₂ Saved</h3>
+            <h2>1.2 Tons</h2>
+        </div>
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <h2>₹12,540</h2>
+        </div>
+    </div>
+
+    <!-- MIDDLE SECTION -->
+    <div class="middle">
+
+        <div class="section">
+            <h2>Ride Management</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Driver</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>R102</td>
+                    <td>Arjun</td>
+                    <td><span class="status ongoing">Ongoing</span></td>
+                </tr>
+                <tr>
+                    <td>R101</td>
+                    <td>Meera</td>
+                    <td><span class="status completed">Completed</span></td>
+                </tr>
+                <tr>
+                    <td>R100</td>
+                    <td>Kiran</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Driver Management</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Ravi ⭐4.8</td>
+                    <td><span class="status active">Active</span></td>
+                </tr>
+                <tr>
+                    <td>Sneha ⭐4.6</td>
+                    <td><span class="status pending">Pending</span></td>
+                </tr>
+                <tr>
+                    <td>Aman ⭐4.9</td>
+                    <td><span class="status active">Active</span></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- BOTTOM SECTION -->
+    <div class="bottom">
+
+        <div class="section">
+            <h2>User Complaints</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Issue</th>
+                </tr>
+                <tr>
+                    <td>C021</td>
+                    <td>Late Pickup</td>
+                </tr>
+                <tr>
+                    <td>C022</td>
+                    <td>Driver Misconduct</td>
+                </tr>
+                <tr>
+                    <td>C023</td>
+                    <td>Route Issue</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section impact">
+            <h2>Green Impact</h2>
+            <p>CO₂ Reduced: <strong>1.2 Tons</strong></p>
+            <p>Trees Saved: <strong>45</strong></p>
+
+            <div class="chart">
+                <div class="bar" style="height:20px"></div>
+                <div class="bar" style="height:40px"></div>
+                <div class="bar" style="height:30px"></div>
+                <div class="bar" style="height:60px"></div>
+                <div class="bar" style="height:50px"></div>
+                <div class="bar" style="height:70px"></div>
+                <div class="bar" style="height:55px"></div>
+            </div>
+
+            <div class="eco">Eco Score: 82%</div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
