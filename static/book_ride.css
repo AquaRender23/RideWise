@@ -179,7 +179,8 @@ button:hover{
 /* MAP SECTION */
 .map-section{
     flex:1;
-    margin-top:-20px;   /* 🔥 moved map slightly upward */
+    margin-top:-20px; 
+    position: relative; 
 }
 
 #map{

@@ -1,69 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Green Commute Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='rider_dashboard.css') }}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Commute Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rider_dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
-            <span>RideWise</span>
-        </div>
-
-        <ul class="menu">
-            <li class="active">
-                <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('add_ride') }}">Add Ride</a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('driver_history') }}">My Rides</a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            </li>
-        </ul>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="main">
-
-        <!-- TOP SECTION -->
-        <section class="top-section">
-
-            <div class="welcome">
-                <h1>Welcome Back, {{name}}</h1>
-                <p>
-                    Drive Smart. Travel Green.<br>
-                </p>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
+                <span>RideWise</span>
             </div>
 
-            <!-- Book Ride Button Also Linked -->
-            <a href="{{ url_for('book_ride') }}">
-                <button class="eco-btn">Add Eco Ride</button>
-            </a>
+            <ul class="menu">
+                <li class="active">
+                    <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
+                </li>
 
-        </section>
+                <li>
+                    <a href="{{ url_for('add_ride') }}">Add Ride</a>
+                </li>
 
-        <!-- FOOTPRINT SECTION -->
-        <!-- <section class="footprint-section glass"> -->
+                <li>
+                    <a href="{{ url_for('driver_history') }}">My Rides</a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+
+            <!-- TOP SECTION -->
+            <section class="top-section">
+
+                <div class="welcome">
+                    <h1>Welcome Back, {{name}}</h1>
+                    <p>
+                        Drive Smart. Travel Green.<br>
+                    </p>
+                </div>
+
+                <!-- Book Ride Button Also Linked -->
+                <a href="{{ url_for('add_ride') }}">
+                    <button class="eco-btn">Add Eco Ride</button>
+                </a>
+
+            </section>
+
+            <!-- FOOTPRINT SECTION -->
+            <!-- <section class="footprint-section glass"> -->
 
             <div class="glass_above_heading"> Your Eco Snapshot </div>
 
@@ -73,22 +74,22 @@
 
                     <div class="card glass">
                         <h3>🌍 Total CO₂ Saved</h3>
-                        <span>128 kg</span>
+                        <span>{{ total_co2 if total_co2 else 0 }} kg</span>
                     </div>
 
                     <div class="card glass">
                         <h3>⛽ Fuel Saved</h3>
-                        <span>52 Liters</span>
+                        <span>{{ total_fuel if total_fuel else 0 }} Liters</span>
                     </div>
 
                     <div class="card glass">
                         <h3>🌳 Equivalent Trees</h3>
-                        <span>6</span>
+                        <span>{{ total_trees if total_trees else 0 }}</span>
                     </div>
 
                     <div class="card glass">
                         <h3>⭐ Eco Score</h3>
-                        <span>820</span>
+                        <span>{{ eco_score if eco_score else 0 }}</span>
                     </div>
 
                 </div>
@@ -101,130 +102,186 @@
 
             </div>
 
-        <!-- </section> -->
+            <!-- </section> -->
 
-        <!-- LOWER DASHBOARD -->
-        <section class="dashboard-lower">
+            <!-- LOWER DASHBOARD -->
+            <section class="dashboard-lower">
 
-            <div class="chart-box glass">
-                <h3>Ride Distribution</h3>
-                <canvas id="pieChart"></canvas>
+                <div class="chart-box glass">
+                    <h3>Ride Distribution</h3>
+                    <canvas id="pieChart"></canvas>
 
-            </div>
+                </div>
 
-            <div class="emission-box glass">
-                <h3>Emission Comparison</h3>
-                <p>Shared Ride vs Normal Ride</p>
-                <canvas id="barChart"></canvas>
+                <div class="emission-box glass">
+                    <h3>Emission Comparison</h3>
+                    <p>Shared Ride vs Normal Ride</p>
+                    <canvas id="barChart"></canvas>
 
-            </div>
+                </div>
 
-            <div class="upcoming-box glass">
-                <h3>Upcoming Rides</h3>
-                <ul>
-                    <li>📍 JP Nagar → MG Road</li>
-                    <li>📍 Indiranagar → Electronic City</li>
-                    <li>📍 Whitefield → HSR Layout</li>
-                </ul>
-            </div>
+                <div class="upcoming-box glass">
+                    <h3>Upcoming Rides</h3>
+                    <div class="upcoming-list">
+                        {% if bookings %}
+                        {% for ride in bookings %}
+                        <p>📍 {{ ride.start_location }} → {{ ride.end_location }}</p>
+                        {% endfor %}
+                        {% else %}
+                        <p>No rides yet</p>
+                        {% endif %}
+                    </div>
+                </div>
 
-        </section>
+            </section>
 
-    </main>
+        </main>
 
-</div>
+    </div>
 
-<script>
+    <script>
 
-// 🌿 LINE CHART
-fetch("/co2-data")
-.then(response => response.json())
-.then(data => {
+        
+        fetch("/driver-distribution")
+            .then(response => response.json())
+            .then(stats => {
 
-    const ctx = document.getElementById("co2Chart");
+                const total = stats.values.reduce((a, b) => a + b, 0);
 
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: data.months,
-            datasets: [{
-                label: "CO₂ Saved (kg)",
-                data: data.values,
-                borderColor: "#c9a96a",
-                backgroundColor: "rgba(201,169,106,0.2)",
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            plugins: {
-                legend: { labels: { color: "#f5f5dc" } }
-            },
-            scales: {
-                x: { ticks: { color: "#f5f5dc" } },
-                y: { ticks: { color: "#f5f5dc" } }
-            }
-        }
-    });
-});
+                const chartCanvas = document.getElementById("co2Chart");
+                const chartBox = chartCanvas.parentElement;
+
+                if (total === 0) {
+
+                    chartCanvas.style.display = "none";
+
+                    const msg = document.createElement("p");
+                    msg.innerText = "Your eco impact will appear after your first ride 🌱";
+                    msg.style.textAlign = "center";
+                    msg.style.marginTop = "60px";
+                    msg.style.color = "#f5f5dc";
+
+                    chartBox.appendChild(msg);
+                    return;
+                }
+
+                fetch("/driver-co2-data")
+                    .then(response => response.json())
+                    .then(data => {
+
+                        const ctx = chartCanvas.getContext("2d");
+
+                        new Chart(ctx, {
+                            type: "line",
+                            data: {
+                                labels: data.months,
+                                datasets: [{
+                                    label: "CO₂ Saved (kg)",
+                                    data: data.values,
+                                    borderColor: "#d4af37",
+                                    borderWidth: 3,
+                                    tension: 0.4,
+                                    fill: true,
+                                    backgroundColor: "rgba(212,175,55,0.25)"
+                                }]
+                            }
+                        });
+
+                    });
+
+            });
+
+        // 🥧 PIE CHART
+        fetch("/driver-distribution")
+            .then(response => response.json())
+            .then(data => {
+
+                const total = data.values.reduce((a, b) => a + b, 0);
+
+                // ✅ FIXED ID HERE
+                const chartCanvas = document.getElementById("pieChart");
+                const chartBox = chartCanvas.parentElement;
+
+                if (total === 0) {
+
+                    chartCanvas.style.display = "none";
+
+                    const msg = document.createElement("p");
+                    msg.innerText = "Start adding rides to see your ride statistics 🚗";
+                    msg.style.textAlign = "center";
+                    msg.style.marginTop = "40px";
+                    msg.style.fontSize = "16px";
+                    msg.style.color = "#f5f5dc";
+
+                    chartBox.appendChild(msg);
+
+                    return;
+                }
+
+                const ctx = chartCanvas.getContext("2d");
+
+                new Chart(ctx, {
+                    type: "pie",
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: ["#22c55e", "#facc15", "#ef4444"]
+                        }]
+                    }
+                });
+
+            });
 
 
-// 🥧 PIE CHART
-fetch("/ride-distribution")
-.then(response => response.json())
-.then(data => {
+        // 📊 BAR CHART
+        fetch("/driver-distribution")
+            .then(response => response.json())
+            .then(stats => {
 
-    const ctx = document.getElementById("pieChart");
+                const total = stats.values.reduce((a, b) => a + b, 0);
 
-    new Chart(ctx, {
-        type: "pie",
-        data: {
-            labels: data.labels,
-            datasets: [{
-                data: data.values,
-                backgroundColor: ["#c9a96a","#4caf50","#ff5252"]
-            }]
-        },
-        options: {
-            plugins: {
-                legend: { labels: { color: "#f5f5dc" } }
-            }
-        }
-    });
-});
+                const chartCanvas = document.getElementById("barChart");
+                const chartBox = chartCanvas.parentElement;
 
+                if (total === 0) {
 
-// 📊 BAR CHART
-fetch("/emission-data")
-.then(response => response.json())
-.then(data => {
+                    chartCanvas.style.display = "none";
 
-    const ctx = document.getElementById("barChart");
+                    const msg = document.createElement("p");
+                    msg.innerText = "Your performance stats will appear after your first booking 📊";
+                    msg.style.textAlign = "center";
+                    msg.style.marginTop = "60px";
+                    msg.style.fontSize = "16px";
+                    msg.style.color = "#f5f5dc";
 
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: data.labels,
-            datasets: [{
-                label: "CO₂ Emission (kg)",
-                data: data.values,
-                backgroundColor: ["#ff5252","#4caf50"]
-            }]
-        },
-        options: {
-            plugins: {
-                legend: { labels: { color: "#f5f5dc" } }
-            },
-            scales: {
-                x: { ticks: { color: "#f5f5dc" } },
-                y: { ticks: { color: "#f5f5dc" } }
-            }
-        }
-    });
-});
+                    chartBox.appendChild(msg);
+                    return;
+                }
 
-</script>
+                fetch("/driver-emission-data")
+                    .then(response => response.json())
+                    .then(data => {
+
+                        const ctx = chartCanvas.getContext("2d");
+
+                        new Chart(ctx, {
+                            type: "bar",
+                            data: {
+                                labels: data.labels,
+                                datasets: [{
+                                    data: data.values,
+                                    backgroundColor: ["#ff6b6b", "#3cb371"]
+                                }]
+                            }
+                        });
+
+                    });
+
+            });
+
+    </script>
 
 </body>
-</html>
 
+</html>

@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Green Commute Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Commute Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='rider_dashboard.css') }}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rider_dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
-            <span>RideWise</span>
-        </div>
-
-        <ul class="menu">
-            <li class="active">
-                <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('book_ride') }}">Book Ride</a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('rider_history') }}">My Rides</a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            </li>
-        </ul>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="main">
-
-        <!-- TOP SECTION -->
-        <section class="top-section">
-
-            <div class="welcome">
-                <h1>Welcome Back, {{ name }}</h1>
-
-                <p>
-                    Drive Smart. Travel Green.<br>
-                </p>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RideWise Logo">
+                <span>RideWise</span>
             </div>
 
-            <!-- Book Ride Button Also Linked -->
-            <a href="{{ url_for('book_ride') }}">
-                <button class="eco-btn">Book Eco Ride</button>
-            </a>
+            <ul class="menu">
+                <li class="active">
+                    <a href="{{ url_for('rider_dashboard') }}">Dashboard</a>
+                </li>
 
-        </section>
+                <li>
+                    <a href="{{ url_for('book_ride') }}">Book Ride</a>
+                </li>
 
-        <!-- FOOTPRINT SECTION -->
-        <!-- <section class="footprint-section glass"> -->
+                <li>
+                    <a href="{{ url_for('rider_history') }}">My Rides</a>
+                </li>
 
-            <div class="glass_above_heading"> Your Eco Snapshot </div>
+                <li>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+
+            <!-- TOP SECTION -->
+            <section class="top-section">
+
+                <div class="welcome">
+                    <h1>Welcome Back, {{ name }}</h1>
+
+                    <p>
+                        Drive Smart. Travel Green.<br>
+                    </p>
+                </div>
+
+                <!-- Book Ride Button Also Linked -->
+                <a href="{{ url_for('book_ride') }}">
+                    <button class="eco-btn">Book Eco Ride</button>
+                </a>
+
+            </section>
+
+            <!-- FOOTPRINT SECTION -->
+            <!-- <section class="footprint-section glass"> -->
+
+            <div class="glass_above_heading">Your Eco Snapshot</div>
 
             <div class="footprint-container">
 
@@ -75,22 +76,22 @@
 
                     <div class="card glass">
                         <h3>🌍 Total CO₂ Saved</h3>
-                        <span>128 kg</span>
+                        <span>{{ total_co2 if total_co2 else 0 }} kg</span>
                     </div>
 
                     <div class="card glass">
                         <h3>⛽ Fuel Saved</h3>
-                        <span>52 Liters</span>
+                        <span>{{ total_fuel if total_fuel else 0 }} Liters</span>
                     </div>
 
                     <div class="card glass">
                         <h3>🌳 Equivalent Trees</h3>
-                        <span>6</span>
+                        <span>{{ total_trees if total_trees else 0 }}</span>
                     </div>
 
                     <div class="card glass">
                         <h3>⭐ Eco Score</h3>
-                        <span>820</span>
+                        <span>{{ eco_score if eco_score else 0 }}</span>
                     </div>
 
                 </div>
@@ -102,205 +103,296 @@
 
             </div>
 
-        <!-- </section> -->
+            <!-- </section> -->
 
-        <!-- LOWER DASHBOARD -->
-        <section class="dashboard-lower">
+            <!-- LOWER DASHBOARD -->
+            <section class="dashboard-lower">
 
-            <div class="chart-box glass">
-                <h3>Ride Distribution</h3>
-                <canvas id="ridePieChart"></canvas>
+                <div class="chart-box glass">
+                    <h3>Ride Distribution</h3>
+                    <canvas id="ridePieChart"></canvas>
 
-            </div>
+                </div>
 
-            <div class="emission-box glass">
-                <h3>Emission Comparison</h3>
-                <p>Shared Ride vs Normal Ride</p>
-                <canvas id="emissionBarChart"></canvas>
+                <div class="emission-box glass">
+                    <h3>Fuel Savings Comparison</h3>
+                    <p style="text-align:center; color:#3cb371; font-weight:600;">
+                        You saved {{ percent_saved }}% fuel.
+                    </p>
+                    <canvas id="emissionBarChart"></canvas>
+                </div>
 
-            </div>
+                <div class="upcoming-box glass">
+                    <h3>Upcoming Rides</h3>
+                    <div class="upcoming-list">
+                        {% if upcoming_rides %}
+                        {% for ride in upcoming_rides %}
+                        <p>
+                            📍 {{ ride.start_location }} → {{ ride.end_location }}
+                        </p>
+                        {% endfor %}
+                        {% else %}
+                        <p>No upcoming rides</p>
+                        {% endif %}
+                    </div>
+                </div>
 
-            <div class="upcoming-box glass">
-                <h3>Upcoming Rides</h3>
-                <ul>
-                    <li>📍 JP Nagar → MG Road</li>
-                    <li>📍 Indiranagar → Electronic City</li>
-                    <li>📍 Whitefield → HSR Layout</li>
-                </ul>
-            </div>
+            </section>
 
-        </section>
+        </main>
 
-    </main>
+    </div>
 
-</div>
+    <script>
+        /* ================= LINE CHART ================= */
 
-<script>
-/* ================= LINE CHART ================= */
+        fetch("/ride-distribution")
+            .then(response => response.json())
+            .then(stats => {
 
-fetch("/co2-data")
-    .then(response => response.json())
-    .then(data => {
+                const total = stats.values.reduce((a, b) => a + b, 0);
 
-        const ctx = document.getElementById('co2Chart').getContext('2d');
+                const chartCanvas = document.getElementById("co2Chart");
+                const chartBox = chartCanvas.parentElement;
 
-        Chart.register({
-            id: 'neonGlow',
-            beforeDatasetsDraw(chart) {
-                const {ctx} = chart;
-                ctx.save();
-                ctx.shadowColor = "rgba(212,175,55,0.9)";
-                ctx.shadowBlur = 25;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 0;
-            },
-            afterDatasetsDraw(chart) {
-                chart.ctx.restore();
-            }
-        });
+                // If no rides yet
+                if (total === 0) {
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: data.months,
-                datasets: [{
-                    label: "CO₂ Saved (kg)",
-                    data: data.values,
-                    borderColor: "#d4af37",
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
+                    chartCanvas.style.display = "none";
 
-                    backgroundColor: (context) => {
-                        const chart = context.chart;
-                        const {ctx, chartArea} = chart;
-                        if (!chartArea) return null;
+                    const msg = document.createElement("p");
+                    msg.innerText = "Your eco impact will appear after your first ride 🌱";
+                    msg.style.textAlign = "center";
+                    msg.style.marginTop = "60px";
+                    msg.style.fontSize = "16px";
+                    msg.style.color = "#f5f5dc";
 
-                        const gradient = ctx.createLinearGradient(
-                            0,
-                            chartArea.top,
-                            0,
-                            chartArea.bottom
-                        );
-                        gradient.addColorStop(0, "rgba(212,175,55,0.6)");
-                        gradient.addColorStop(1, "rgba(212,175,55,0.05)");
-                        return gradient;
+                    chartBox.appendChild(msg);
+                    return;
+                }
+
+                // If rides exist → load CO2 data and draw chart
+                fetch("/co2-data")
+                    .then(response => response.json())
+                    .then(data => {
+
+                        const ctx = chartCanvas.getContext('2d');
+
+                        Chart.register({
+                            id: 'neonGlow',
+                            beforeDatasetsDraw(chart) {
+                                const { ctx } = chart;
+                                ctx.save();
+                                ctx.shadowColor = "rgba(212,175,55,0.9)";
+                                ctx.shadowBlur = 25;
+                                ctx.shadowOffsetX = 0;
+                                ctx.shadowOffsetY = 0;
+                            },
+                            afterDatasetsDraw(chart) {
+                                chart.ctx.restore();
+                            }
+                        });
+
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: data.months,
+                                datasets: [{
+                                    label: "CO₂ Saved (kg)",
+                                    data: data.values,
+                                    borderColor: "#d4af37",
+                                    borderWidth: 3,
+                                    fill: true,
+                                    tension: 0.4,
+
+                                    backgroundColor: (context) => {
+                                        const chart = context.chart;
+                                        const { ctx, chartArea } = chart;
+                                        if (!chartArea) return null;
+
+                                        const gradient = ctx.createLinearGradient(
+                                            0,
+                                            chartArea.top,
+                                            0,
+                                            chartArea.bottom
+                                        );
+                                        gradient.addColorStop(0, "rgba(212,175,55,0.6)");
+                                        gradient.addColorStop(1, "rgba(212,175,55,0.05)");
+                                        return gradient;
+                                    },
+
+                                    pointBackgroundColor: "#d4af37",
+                                    pointBorderColor: "#ffffff",
+                                    pointBorderWidth: 2,
+                                    pointRadius: 6,
+                                    pointHoverRadius: 10
+                                }]
+                            },
+                            options: {
+                                plugins: {
+                                    legend: {
+                                        labels: {
+                                            color: "#f5f5dc"
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        ticks: { color: "#f5f5dc" }
+                                    },
+                                    y: {
+                                        ticks: { color: "#f5f5dc" }
+                                    }
+                                }
+                            }
+                        });
+
+                    });
+
+            });
+        /* ================= PIE / DOUGHNUT CHART ================= */
+
+        fetch("/ride-distribution")
+            .then(response => response.json())
+            .then(data => {
+
+                const total = data.values.reduce((a, b) => a + b, 0);
+
+                const chartCanvas = document.getElementById("ridePieChart");
+                const chartBox = chartCanvas.parentElement;
+
+                // If no rides yet
+                if (total === 0) {
+
+                    chartCanvas.style.display = "none";
+
+                    const msg = document.createElement("p");
+                    msg.innerText = "Start booking rides to see your ride statistics 🚗";
+                    msg.style.textAlign = "center";
+                    msg.style.marginTop = "40px";
+                    msg.style.fontSize = "16px";
+                    msg.style.color = "#f5f5dc";
+
+                    chartBox.appendChild(msg);
+
+                    return;
+                }
+
+                // If rides exist → show chart
+                const pieCtx = chartCanvas.getContext("2d");
+
+                new Chart(pieCtx, {
+                    type: "pie",
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: [
+                                "#22c55e",
+                                "#facc15",
+                                "#ef4444"
+                            ]
+                        }]
                     },
-
-                    pointBackgroundColor: "#d4af37",
-                    pointBorderColor: "#ffffff",
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 10
-                }]
-            },
-            options: {
-                plugins:{
-                    legend:{
-                        labels:{
-                            color:"#f5f5dc"
+                    options: {
+                        plugins: {
+                            legend: {
+                                position: "top",
+                                align: "center",
+                                labels: {
+                                    color: "#f5f5dc",
+                                    boxWidth: 20,
+                                    padding: 7
+                                }
+                            }
                         }
                     }
-                },
-                scales:{
-                    x:{
-                        ticks:{ color:"#f5f5dc" }
-                    },
-                    y:{
-                        ticks:{ color:"#f5f5dc" }
-                    }
+                });
+
+            });
+
+
+        /* ================= BAR CHART ================= */
+
+        fetch("/ride-distribution")
+            .then(response => response.json())
+            .then(stats => {
+
+                const total = stats.values.reduce((a, b) => a + b, 0);
+
+                const chartCanvas = document.getElementById("emissionBarChart");
+                const chartBox = chartCanvas.parentElement;
+
+                if (total === 0) {
+                    chartCanvas.style.display = "none";
+
+                    const msg = document.createElement("p");
+                    msg.innerText = "Emission insights will appear after your first ride 🌱";
+                    msg.style.textAlign = "center";
+                    msg.style.marginTop = "60px";
+                    msg.style.fontSize = "16px";
+                    msg.style.color = "#f5f5dc";
+
+                    chartBox.appendChild(msg);
+                    return;
                 }
-            }
-        });
 
-    });
+                fetch("/emission-data")
+                    .then(response => response.json())
+                    .then(data => {
 
-/* ================= PIE / DOUGHNUT CHART ================= */
+                        console.log("Emission Data:", data); // 🔍 debug
 
-fetch("/ride-distribution")
-    .then(response => response.json())
-    .then(data => {
+                        const barCtx = chartCanvas.getContext("2d");
 
-        const pieCtx = document.getElementById("ridePieChart").getContext("2d");
+                        new Chart(barCtx, {
+                            type: "bar",
+                            data: {
+                                labels: data.labels,
+                                datasets: [{
+                                    label: "Fuel Usage (Liters)",
+                                    data: data.values,
+                                    backgroundColor: ["#ff6b6b", "#3cb371"]
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                interaction: {
+                                    mode: 'nearest',
+                                    intersect: false   // 🔥 IMPORTANT FIX
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    },
+                                    tooltip: {
+                                        enabled: true,
+                                        mode: 'nearest',
+                                        intersect: false,
+                                        callbacks: {
+                                            label: function (context) {
+                                                return context.dataset.label + ": " + context.parsed.y + " L";
+                                            }
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        ticks: { color: "#f5f5dc" }
+                                    },
+                                    y: {
+                                        ticks: { color: "#f5f5dc" }
+                                    }
+                                }
+                            }
+                        });
 
-        new Chart(pieCtx, {
-            type: "doughnut",
-            data: {
-                labels: data.labels,
-                datasets: [{
-                    data: data.values,
-                    backgroundColor: [
-                        "#d4af37",   // Gold
-                        "#3cb371",   // Green
-                        "#ff6b6b"    // Red
-                    ],
-                    borderColor: "#111",
-                    borderWidth: 2,
-                    hoverOffset: 15
-                }]
-            },
-            options: {
-                cutout: "65%",
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: "#f5f5dc"
-                        }
-                    }
-                }
-            }
-        });
+                    });
 
-    });
+            });
 
-    /* ================= BAR CHART ================= */
-
-fetch("/emission-data")
-    .then(response => response.json())
-    .then(data => {
-
-        const barCtx = document.getElementById("emissionBarChart").getContext("2d");
-
-        new Chart(barCtx, {
-            type: "bar",
-            data: {
-                labels: data.labels,
-                datasets: [{
-    label: "CO₂ Emission (kg)",
-    data: data.values,
-    backgroundColor: ["#ff6b6b", "#3cb371"],
-    borderColor: "#111",
-    borderWidth: 2,
-    borderRadius: 5,
-
-    barThickness: 30,
-    maxBarThickness: 35
-}]
-
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: "#f5f5dc"
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: { color: "#f5f5dc" }
-                    },
-                    y: {
-                        ticks: { color: "#f5f5dc" }
-                    }
-                }
-            }
-        });
-
-    });
-
-
-</script>
+    </script>
 
 </body>
+
 </html>
