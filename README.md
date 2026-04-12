@@ -170,26 +170,4 @@ http://localhost:5000
 * ✅ Deployment on Render / Railway
 
 ---
-
-## 🤝 Contributing
-
-Contributions are welcome! To contribute:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/awesome-feature`)
-3. Commit your changes (`git commit -m "Add awesome feature"`)
-4. Push to the branch (`git push origin feature/awesome-feature`)
-5. Open a Pull Request
-
----
-
-## 🏆 Credits
-
-* Built by the **RideWise Team**
-* Maps powered by [OpenStreetMap](https://www.openstreetmap.org/) & [Leaflet.js](https://leafletjs.com/)
-* Routing by [OSRM](http://project-osrm.org/)
-* Geocoding by [Nominatim](https://nominatim.org/)
-
----
-
 > 🔥 **RideWise** — Empowering greener commutes, one shared ride at a time. 🌿
