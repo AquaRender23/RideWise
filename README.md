@@ -2,20 +2,20 @@
 
 > **Drive Smart. Travel Green.**
 
-RideWise is a full-stack carpooling web application that connects eco-conscious riders and drivers. It calculates real driving distances, matches riders to available driver rides, and tracks environmental impact — CO₂ saved, fuel conserved, and eco points earned — all in real time.
+RideWise is a full-stack carpooling web app that connects eco-conscious riders and drivers. It calculates real driving distances, matches riders to available drivers, and tracks environmental impact — CO₂ saved, fuel conserved, and eco points earned — all in real time.
 
 ---
 
 ## 🌟 Features
 
-✅ **Role-Based Login** – Separate dashboards for Riders, Drivers, and Admins  
-✅ **Smart Ride Matching** – Matches riders to drivers based on route, date, time & seats  
-✅ **Real Distance Calculation** – Powered by OSRM routing engine + Nominatim geocoding  
-✅ **Eco Impact Tracking** – CO₂ saved, fuel saved, fare estimate & eco points per ride  
-✅ **Interactive Maps** – Live Leaflet.js maps on booking and ride-adding pages  
-✅ **Live Charts** – Chart.js dashboards with CO₂ trends, ride distribution & emission comparison  
-✅ **Secure Auth** – Password hashing via Flask-Bcrypt with session management  
-✅ **Admin Panel** – Overview of rides, drivers, complaints & green impact stats  
+- **Role-Based Login** – Separate dashboards for Riders, Drivers, and Admins
+- **Smart Ride Matching** – Matches riders to drivers based on route, date, time & available seats
+- **Real Distance Calculation** – Powered by OSRM routing engine + Nominatim geocoding
+- **Eco Impact Tracking** – CO₂ saved, fuel saved, fare estimate & eco points per ride
+- **Interactive Maps** – Live Leaflet.js maps on booking and ride-adding pages
+- **Live Charts** – Chart.js dashboards with CO₂ trends, ride distribution & emission comparison
+- **Secure Auth** – Password hashing via Flask-Bcrypt with session management
+- **Admin Panel** – Overview of rides, drivers, users & green impact stats
 
 ---
 
@@ -47,8 +47,8 @@ cd ridewise
 
 ```bash
 python -m venv venv
-source venv/bin/activate      # On Linux/macOS
-venv\Scripts\activate         # On Windows
+source venv/bin/activate      # Linux/macOS
+venv\Scripts\activate         # Windows
 ```
 
 ### 3. Install Dependencies
@@ -59,10 +59,10 @@ pip install flask pymongo flask-bcrypt requests
 
 ### 4. Set Up Configuration
 
-Create a `config.py` file in the root directory:
+Create a `config.py` in the root directory:
 
 ```python
-MONGO_URI = "mongodb+srv://your-mongo-uri"
+MONGO_URI = "your-mongodb-uri"
 SECRET_KEY = "your-secret-key"
 ```
 
@@ -72,19 +72,15 @@ SECRET_KEY = "your-secret-key"
 python app.py
 ```
 
-Then open your browser at:
-
-```
-http://localhost:5000
-```
+Open your browser at `http://localhost:5000`
 
 ---
 
 ## 📂 Folder Structure
 
 ```
-📂 ridewise
-├── 📂 templates
+ridewise/
+├── templates/
 │   ├── landing.html
 │   ├── login.html
 │   ├── register.html
@@ -96,8 +92,8 @@ http://localhost:5000
 │   ├── rider_history.html
 │   ├── driver_history.html
 │   └── sorry.html
-├── 📂 static
-│   ├── 📂 images
+├── static/
+│   ├── images/
 │   ├── landing.css
 │   ├── login.css
 │   ├── register.css
@@ -109,9 +105,9 @@ http://localhost:5000
 │   ├── driver_history.css
 │   ├── admin.css
 │   └── sorry.css
-├── 📄 app.py
-├── 📄 config.py
-└── 📄 README.md
+├── app.py
+├── config.py
+└── README.md
 ```
 
 ---
@@ -131,21 +127,21 @@ http://localhost:5000
 | GET | `/admin/dashboard` | Admin overview panel |
 | GET | `/rider_history` | Rider's booked ride history |
 | GET | `/driver_history` | Driver's ride & booking history |
-| GET | `/co2-data` | Line chart data (CO₂ by month) |
+| GET | `/co2-data` | Line chart data (CO₂ by ride) |
 | GET | `/ride-distribution` | Pie chart data (ride statuses) |
-| GET | `/emission-data` | Bar chart data (emission comparison) |
+| GET | `/emission-data` | Bar chart data (fuel comparison) |
 
 ---
 
 ## 💡 How It Works
 
-1. **Register & Login** — Users sign up and log in as a Rider, Driver, or Admin.
-2. **Driver adds a ride** — Specifies route, date, time, vehicle number & available seats.
-3. **Rider books a ride** — Enters matching route, date, time & number of passengers.
-4. **Smart matching** — App finds a driver ride that fits all criteria.
-5. **Distance & fare calculated** — OSRM computes real driving distance; fare = distance × ₹10/km.
-6. **Eco impact saved** — CO₂ saved, fuel saved & eco points stored per booking.
-7. **History & dashboards** — Both riders and drivers can view all past rides with eco breakdowns.
+1. **Register & Login** — Users sign up and log in as a Rider, Driver, or Admin
+2. **Driver adds a ride** — Specifies route, date, time, vehicle number & available seats
+3. **Rider books a ride** — Enters matching route, date, time & number of passengers
+4. **Smart matching** — App finds a driver whose route covers the rider's start and end points (within a 1.5 km radius), with a matching date and a departure time within 5 minutes
+5. **Distance & fare calculated** — OSRM computes real driving distance; fare is split based on total passengers and includes fuel cost + driver profit
+6. **Eco impact saved** — CO₂ saved, fuel used & eco points stored per booking, and updated dynamically as more riders join the same ride
+7. **History & dashboards** — Riders and drivers can view all past rides with full eco breakdowns
 
 ---
 
@@ -153,21 +149,22 @@ http://localhost:5000
 
 | Metric | Formula |
 |---|---|
-| 💰 Fare | `distance × ₹10` |
-| ⛽ Fuel Saved | `distance × 0.2 L` |
-| 🌍 CO₂ Saved | `distance × 0.5 kg` |
-| ⭐ Eco Points | `distance × 5 pts` |
+| ⛽ Fuel Used | `distance ÷ 15 (mileage)` |
+| 💰 Fare per Rider | `(fuel cost + 15% driver profit) ÷ passengers` |
+| 🌍 CO₂ Saved | `fuel used × 2.3 kg × (passengers − 1)` |
+| 🌳 Trees Equivalent | `CO₂ saved ÷ 21` |
+| ⭐ Eco Score | `(CO₂ saved ÷ CO₂ without sharing) × 100` |
 
 ---
 
 ## 🚀 Future Plans
 
-* ✅ Real-time ride tracking on map
-* ✅ Dynamic eco stats pulled from actual ride history
-* ✅ Rating system for drivers and riders
-* ✅ Push notifications for upcoming rides
-* ✅ GitHub OAuth login support
-* ✅ Deployment on Render / Railway
+- Real-time ride tracking on map
+- Rating system for drivers and riders
+- Push notifications for upcoming rides
+- GitHub OAuth login support
+- Deployment on Render / Railway
 
 ---
+
 > 🔥 **RideWise** — Empowering greener commutes, one shared ride at a time. 🌿
