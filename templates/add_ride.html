@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Ride | RideWise</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/add_ride.css">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+
+            <div class="sidebar-header">
+                <img src="../static/images/logo.png" class="sidebar-logo">
+                <div class="brand-name">RIDEWISE</div>
+            </div>
+
+            <nav>
+                <div class="menu">
+                    <a href="{{ url_for('driver_dashboard') }}"> Dashboard</a>
+                    <a href="{{ url_for('add_ride') }}"> Add Ride</a>
+                    <a href="{{ url_for('driver_history') }}"> My Rides</a>
+                    <a href="{{ url_for('logout') }}"> Logout</a>
+                </div>
+            </nav>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <h1>ADD AN ECO RIDE 🌿</h1>
+            <p class="tagline">Drive smart. Travel green.</p>
+
+            <div class="content-wrapper">
+
+                <!-- LEFT FORM -->
+                <div class="form-section">
+
+                    <form method="POST" action="{{ url_for('add_ride') }}">
+
+                        <label>Start Location</label>
+                        <input type="text" name="start" placeholder="Enter starting location" required>
+
+                        <label>Destination</label>
+                        <input type="text" name="end" placeholder="Enter destination" required>
+
+                        <div class="row">
+                            <div>
+                                <label>Date</label>
+                                <input type="date" name="date" required>
+                            </div>
+
+                            <div>
+                                <label>Time</label>
+                                <input type="time" name="time" required>
+                            </div>
+                        </div>
+
+                        <label>Vehicle Number</label>
+                        <input type="text" name="vehicle" placeholder="Enter vehicle number" required>
+
+                        <label>Seats Available</label>
+                        <input type="number" name="capacity" placeholder="Enter seats available" min="1" required>
+
+                        <button type="submit">Add Ride</button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- RIGHT MAP -->
+                <div class="map-section">
+                    <div id="map"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        var map = L.map('map').setView([12.9716, 77.5946], 12);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+    </script>
+
+</body>
+
+</html>

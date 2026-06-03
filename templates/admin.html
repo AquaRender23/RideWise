@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>RideWise Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}">
+                <span>RideWise Admin</span>
+            </div>
+
+            <div class="header-right">
+                <div>Admin - {{ name }}</div>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <div class="card">
+                <h3>Total Rides</h3>
+                <h2>{{ total_rides }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Registered Drivers</h3>
+                <h2>{{ active_drivers }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Registered Riders</h3>
+                <h2>{{ active_users }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>CO₂ Saved</h3>
+                <h2>{{ total_co2 }} kg</h2>
+            </div>
+
+            <div class="card">
+                <h3>Total Revenue</h3>
+                <h2>₹{{ total_revenue }}</h2>
+            </div>
+        </div>
+
+        <!-- MAIN SECTION -->
+        <div class="middle">
+
+            <!-- RIDE MANAGEMENT -->
+            <div class="section">
+                <h2>Ride Management</h2>
+                <form method="GET">
+
+                    <input type="text" name="search" placeholder="Search User">
+
+                    <select name="status">
+
+                        <option value="">
+                            All Rides
+                        </option>
+
+                        <option value="completed">
+                            Completed
+                        </option>
+
+                        <option value="upcoming">
+                            Upcoming
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                    <button type="submit">
+                        Filter
+                    </button>
+
+                </form>
+                <br>
+                <table>
+                    <tr>
+                        <th>Rider</th>
+                        <th>Driver</th>
+                        <th>Vehicle</th>
+                        <th>Distance</th>
+                        <th>Fare</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {% for r in rides %}
+                    <tr>
+                        <td>{{ r.rider_name }}</td>
+                        <td>{{ r.driver_name }}</td>
+                        <td>{{ r.vehicle }}</td>
+                        <td>{{ r.distance_km }} km</td>
+                        <td>₹{{ r.fare }}</td>
+                        <td>
+                            <span class="status
+                            {% if r.status == 'upcoming' %}ongoing
+                            {% elif r.status == 'completed' %}completed
+                            {% elif r.status == 'cancelled' %}cancelled
+                            {% endif %}">
+                                {{ r.status.capitalize() }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- ENVIRONMENTAL IMPACT -->
+            <div class="section impact">
+                <h2>RideWise Environmental Impact 🌱</h2>
+
+                <p>Total CO₂ Reduced:
+                    <strong>{{ total_co2 }} kg</strong>
+                </p>
+
+                <p>Fuel Saved:
+                    <strong>{{ total_fuel }} L</strong>
+                </p>
+
+                <p>Eco Points Generated:
+                    <strong>{{ total_points }}</strong>
+                </p>
+
+                <div class="eco">
+                    Eco Score: {{ eco_score }}%
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PLATFORM OVERVIEW -->
+        <div class="bottom">
+
+            <div class="section">
+                <h2>Platform Overview</h2>
+
+                <table>
+                    <tr>
+                        <td>Completed Rides</td>
+                        <td>{{ completed_rides }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Upcoming Rides</td>
+                        <td>{{ upcoming_rides }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cancelled Rides</td>
+                        <td>{{ cancelled_rides }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Total Riders</td>
+                        <td>{{ total_riders }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Total Drivers</td>
+                        <td>{{ total_drivers }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Top Performers</h2>
+
+                <p>
+                    🏆 Top Eco Rider:
+                    <strong>{{ top_eco_rider }}</strong>
+                </p>
+
+                <p>
+                    CO₂ Saved:
+                    <strong>{{ top_eco_score }} kg</strong>
+                </p>
+
+                <br>
+
+                <p>
+                    🚗 Top Driver:
+                    <strong>{{ top_driver }}</strong>
+                </p>
+
+                <p>
+                    Total Rides:
+                    <strong>{{ top_driver_rides }}</strong>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- USER + DRIVER MANAGEMENT -->
+        <div class="bottom">
+
+            <div class="section">
+                <h2>User Management</h2>
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Bookings</th>
+                    </tr>
+
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.booking_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+
+            <div class="section">
+                <h2>Driver Management</h2>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Rides Served</th>
+                    </tr>
+
+                    {% for driver in drivers %}
+                    <tr>
+                        <td>{{ driver.name }}</td>
+                        <td>{{ driver.email }}</td>
+                        <td>{{ driver.ride_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
