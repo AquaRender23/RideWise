@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, session, url_for, j
 from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
 from bson.objectid import ObjectId
+from dotenv import load_dotenv
+load_dotenv()
 from config import MONGO_URI, SECRET_KEY
 import requests
 from bson import ObjectId
